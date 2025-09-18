@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.ts";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 
 export async function register(name: string, email: string, password: string) {
@@ -79,12 +80,16 @@ export async function login(email:string, password:string) {
         throw err;
     }
 
+    const JWT_SECRET = process.env.JWT_SECRET || "defaultSecret";
+    const payload = { id: user.id, email: user.email};
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+
     return {
         user: {
             id: user.id,
             name: user.name,
             email: user.email
-        }
+        }, token
     }
 
 }

@@ -2,12 +2,14 @@ import express from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
 import authRoutes from "./routes/auth.routes.ts";
+import taskRoutes from "./routes/task.routes.ts";
 
 
 export const app = express(); 
 app.use(express.json());
 
 app.use("/api", authRoutes);
+app.use("/api", taskRoutes);
 
 (async () => {
     const MONGO_URI = process.env.MONGO_URI;
